@@ -3,7 +3,7 @@ import { Schema, Types, model } from 'mongoose';
 const participantSchema = new Schema(
   {
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    email: { type: String, required: true },
     birthDate: { type: String, required: true },
     referal: {
       type: String,
@@ -14,5 +14,7 @@ const participantSchema = new Schema(
   },
   { versionKey: false, timestamps: true },
 );
+
+participantSchema.index({ email: 1, event: 1 }, { unique: true });
 
 export const Participant = model('Participant', participantSchema);

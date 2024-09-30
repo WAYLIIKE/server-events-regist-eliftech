@@ -12,7 +12,10 @@ export const fetchParticipants = async id => {
 };
 
 export const addParticipants = async participant => {
-  await checkParticipantUniqueService({ email: participant.email });
+  await checkParticipantUniqueService({
+    email: participant.email,
+    event: participant.event,
+  });
 
   const newParticipant = await Participant.create(participant);
 
@@ -21,6 +24,7 @@ export const addParticipants = async participant => {
 
 const checkParticipantUniqueService = async filter => {
   const isParticipantExists = await Participant.exists(filter);
+
   if (isParticipantExists)
     throw new Error('Participant with provided email already exists');
 };
