@@ -1,10 +1,20 @@
 import mongoose from 'mongoose';
 import { Event } from '../models/eventModel.js';
 
-export const fetchAllEvents = async () => {
-  const events = await Event.find();
+export const fetchAllEvents = async (page, limit) => {
+  const events = await Event.find()
+    .skip((page - 1) * limit)
+    .limit(limit);
 
-  return events;
+  const total = await Event.countDocuments();
+
+  const res = {
+    events,
+    totalPages: Math.ceil(total / limit),
+    currentPage: page,
+  };
+
+  return res;
 };
 
 export const fetchIdEvent = async id => {
